@@ -166,7 +166,7 @@ instance Data.ProtoLens.Field.HasField Bill "zipCode"
                  (\ _ y__ -> Prelude.fmap Bill'ZipCode y__))
                 Prelude.. Data.ProtoLens.maybeLens Data.ProtoLens.fieldDefault
 instance Data.ProtoLens.Message Bill where
-        messageName _ = Data.Text.pack "twirp.example.haberdasher.Bill"
+        messageName _ = Data.Text.pack "example.haberdasher.Bill"
         fieldsByTag
           = let price__field_descriptor
                   = Data.ProtoLens.FieldDescriptor "price"
@@ -432,8 +432,7 @@ instance Prelude.Show EmptyMessage where
               (Prelude.showString (Data.ProtoLens.showMessageShort __x)
                  (Prelude.showChar '}' __s))
 instance Data.ProtoLens.Message EmptyMessage where
-        messageName _
-          = Data.Text.pack "twirp.example.haberdasher.EmptyMessage"
+        messageName _ = Data.Text.pack "example.haberdasher.EmptyMessage"
         fieldsByTag = let in Data.Map.fromList []
         unknownFields
           = Lens.Family2.Unchecked.lens _EmptyMessage'_unknownFields
@@ -497,7 +496,7 @@ instance Data.ProtoLens.Field.HasField FieldTestMessage "testBytes"
               Prelude.. Prelude.id
 instance Data.ProtoLens.Message FieldTestMessage where
         messageName _
-          = Data.Text.pack "twirp.example.haberdasher.FieldTestMessage"
+          = Data.Text.pack "example.haberdasher.FieldTestMessage"
         fieldsByTag
           = let testBytes__field_descriptor
                   = Data.ProtoLens.FieldDescriptor "test_bytes"
@@ -609,7 +608,7 @@ instance Data.ProtoLens.Field.HasField Hat "name" (Data.Text.Text)
                (\ x__ y__ -> x__{_Hat'name = y__}))
               Prelude.. Prelude.id
 instance Data.ProtoLens.Message Hat where
-        messageName _ = Data.Text.pack "twirp.example.haberdasher.Hat"
+        messageName _ = Data.Text.pack "example.haberdasher.Hat"
         fieldsByTag
           = let inches__field_descriptor
                   = Data.ProtoLens.FieldDescriptor "inches"
@@ -767,7 +766,7 @@ instance Data.ProtoLens.Field.HasField Ping "service"
                (\ x__ y__ -> x__{_Ping'service = y__}))
               Prelude.. Prelude.id
 instance Data.ProtoLens.Message Ping where
-        messageName _ = Data.Text.pack "twirp.example.haberdasher.Ping"
+        messageName _ = Data.Text.pack "example.haberdasher.Ping"
         fieldsByTag
           = let service__field_descriptor
                   = Data.ProtoLens.FieldDescriptor "service"
@@ -967,7 +966,7 @@ instance Data.ProtoLens.Field.HasField Pong "u" (Data.Text.Text)
                  (\ _ y__ -> Prelude.fmap Pong'U y__))
                 Prelude.. Data.ProtoLens.maybeLens Data.ProtoLens.fieldDefault
 instance Data.ProtoLens.Message Pong where
-        messageName _ = Data.Text.pack "twirp.example.haberdasher.Pong"
+        messageName _ = Data.Text.pack "example.haberdasher.Pong"
         fieldsByTag
           = let status__field_descriptor
                   = Data.ProtoLens.FieldDescriptor "status"
@@ -1255,7 +1254,7 @@ instance Data.ProtoLens.Field.HasField Price "cents"
                (\ x__ y__ -> x__{_Price'cents = y__}))
               Prelude.. Prelude.id
 instance Data.ProtoLens.Message Price where
-        messageName _ = Data.Text.pack "twirp.example.haberdasher.Price"
+        messageName _ = Data.Text.pack "example.haberdasher.Price"
         fieldsByTag
           = let dollars__field_descriptor
                   = Data.ProtoLens.FieldDescriptor "dollars"
@@ -1371,7 +1370,7 @@ instance Data.ProtoLens.Field.HasField Size "inches"
                (\ x__ y__ -> x__{_Size'inches = y__}))
               Prelude.. Prelude.id
 instance Data.ProtoLens.Message Size where
-        messageName _ = Data.Text.pack "twirp.example.haberdasher.Size"
+        messageName _ = Data.Text.pack "example.haberdasher.Size"
         fieldsByTag
           = let inches__field_descriptor
                   = Data.ProtoLens.FieldDescriptor "inches"
@@ -1489,7 +1488,7 @@ instance Data.ProtoLens.Field.HasField Test "vec'altPrices"
                (\ x__ y__ -> x__{_Test'altPrices = y__}))
               Prelude.. Prelude.id
 instance Data.ProtoLens.Message Test where
-        messageName _ = Data.Text.pack "twirp.example.haberdasher.Test"
+        messageName _ = Data.Text.pack "example.haberdasher.Test"
         fieldsByTag
           = let items__field_descriptor
                   = Data.ProtoLens.FieldDescriptor "items"
@@ -1646,7 +1645,7 @@ data Haberdasher = Haberdasher{}
                      deriving ()
 instance Data.ProtoLens.Service.Types.Service Haberdasher where
         type ServiceName Haberdasher = "Haberdasher"
-        type ServicePackage Haberdasher = "twirp.example.haberdasher"
+        type ServicePackage Haberdasher = "example.haberdasher"
         type ServiceMethods Haberdasher = '["getBill", "makeHat"]
 instance Data.ProtoLens.Service.Types.HasMethodImpl Haberdasher
            "makeHat"
@@ -1668,7 +1667,7 @@ data Health = Health{}
                 deriving ()
 instance Data.ProtoLens.Service.Types.Service Health where
         type ServiceName Health = "Health"
-        type ServicePackage Health = "twirp.example.haberdasher"
+        type ServicePackage Health = "example.haberdasher"
         type ServiceMethods Health = '["check"]
 instance Data.ProtoLens.Service.Types.HasMethodImpl Health "check"
          where

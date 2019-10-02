@@ -1,4 +1,4 @@
-module github.com/tclem/twirp-haskell
+module github.com/tclem/proto-lens-jsonpb
 
 go 1.12
 

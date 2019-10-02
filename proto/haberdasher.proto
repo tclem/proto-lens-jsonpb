@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-// This is an example set of twirp services.
+// This is an example set of types
 
-package twirp.example.haberdasher;
+package example.haberdasher;
 option go_package = "haberdasher";
 
 // Haberdasher service makes hats for clients.

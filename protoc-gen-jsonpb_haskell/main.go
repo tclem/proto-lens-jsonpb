@@ -37,11 +37,11 @@ func (g *generator) Generate() *plugin.CodeGeneratorResponse {
 	resp := new(plugin.CodeGeneratorResponse)
 
 	for _, f := range g.protoFilesToGenerate() {
-		twirpFileName := "Proto/" + packageFileName(filePath(f)) + "_JSON.hs"
+		jsonpbFileName := "Proto/" + packageFileName(filePath(f)) + "_JSON.hs"
 
 		haskellCode := g.generateHaskellCode(f)
 		respFile := &plugin.CodeGeneratorResponse_File{
-			Name:    proto.String(twirpFileName),
+			Name:    proto.String(jsonpbFileName),
 			Content: proto.String(haskellCode),
 		}
 		resp.File = append(resp.File, respFile)
