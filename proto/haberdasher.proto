@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+// This is an example set of twirp services.
+
+package twirp.example.haberdasher;
+option go_package = "haberdasher";
+
+// Haberdasher service makes hats for clients.
+service Haberdasher {
+  // MakeHat produces a hat of mysterious, randomly-selected color!
+  rpc MakeHat (Size) returns (Hat);
+  // Get paid
+  rpc GetBill (Hat) returns (Bill);
+}
+
+// Health check service
+service Health {
+  rpc Check (Ping) returns (Pong);
+}
+
+// Size of a Hat, in inches.
+message Size {
+  int32 inches = 1; // must be > 0
+}
+
+// A Hat is a piece of headwear made by a Haberdasher.
+message Hat {
+  int32 inches = 1;
+  string color = 2; // anything but "invisible"
+  string name = 3; // i.e. "bowler"
+}
+
+message Bill {
+  Price price = 1;
+  BillingStatus status = 2;
+
+  oneof extra {
+    string vat_info = 3;
+    string zip_code = 4;
+  }
+
+  enum BillingStatus {
+    UN_PAID = 0;
+    PAID = 1;
+  }
+}
+
+message Test {
+  repeated int32 items = 1;
+  repeated Price alt_prices = 2;
+}
+
+message Price {
+  uint32 dollars = 1;
+  uint32 cents = 2;
+}
+
+message Ping {
+  string service = 1;
+}
+
+message Pong {
+  string status = 1;
+  repeated Test stuff = 2;
+  oneof extra {
+    uint32 t = 3;
+    string u = 4;
+  }
+  int32 id = 5;
+  string type = 6;
+}
+
+message FieldTestMessage {
+  bytes test_bytes = 3;
+}
+
+message EmptyMessage {}

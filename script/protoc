@@ -1,0 +1,12 @@
+#!/bin/bash
+#/ Usage: script/protoc
+#/
+#/ Generate from Haskell code from .proto files.
+
+set -e
+cd "$(dirname "$0")/.."
+
+protoc -I=. --proto_path=./proto \
+  --plugin=protoc-gen-haskell=`which proto-lens-protoc` --haskell_out=./app \
+  --plugin=protoc-gen-jsonpb_haskell=./script/run-jsonpb_haskell --jsonpb_haskell_out=./app \
+  haberdasher.proto
