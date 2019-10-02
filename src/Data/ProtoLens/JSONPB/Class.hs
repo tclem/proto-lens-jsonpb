@@ -149,12 +149,12 @@ instance KeyValuePB [A.Pair] where
 -- | Construct a monoidal key-value pair, using 'mempty' to represent omission
 -- of default values (unless the given 'Options' force their emission).
 (.=) ::
-     (ToJSONPB v, KeyValuePB kvp) => Text -> v -> Options -> kvp
+     (ToJSONPB v, KeyValuePB kvp, FieldDefault v, Eq v) => Text -> v -> Options -> kvp
 k .= v = mk
   where
-    mk opts@Options {..} = pair k v opts
-      -- | not optEmitDefaultValuedFields && isDefault v = mempty
-      -- | otherwise = pair k v opts
+    mk opts@Options {..} -- = pair k v opts
+      | not optEmitDefaultValuedFields && fieldDefault == v = mempty
+      | otherwise = pair k v opts
 
 -- | 'Data.Aeson..:' variant for JSONPB; if the given key is missing from the
 -- object, or if it is present but its value is null, we produce the default
@@ -450,5 +450,10 @@ instance FromJSONPB a => FromJSONPB [a] where
   parseJSONPB A.Null       = pure []
   parseJSONPB v            = A.typeMismatch "repeated" v
 
+-- A couple of orphaned FieldDefault instances
+-- NB: Not ideal, should contribute back to proto-lens or come up with another concept of default fields.
 instance FieldDefault [a] where
   fieldDefault = mempty
+
+instance FieldDefault (Maybe a) where
+  fieldDefault = Nothing
