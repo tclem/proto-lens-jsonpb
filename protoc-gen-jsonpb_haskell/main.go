@@ -195,25 +195,31 @@ func generateOneof(b *bytes.Buffer, message *descriptor.DescriptorProto, oneof *
 
 func generateEnum(b *bytes.Buffer, enum *descriptor.EnumDescriptorProto, parent *descriptor.DescriptorProto) {
 	n := enum.GetName()
-	parentName := parent.GetName()
+	qualifiedName := n
+	if parent != nil {
+		qualifiedName = fmt.Sprintf("%s'%s", parent.GetName(), n)
+	}
 
 	// Generate a FromJSONPB Instance
 	print(b, "")
-	print(b, "instance FromJSONPB %s'%s where", parentName, n)
+	print(b, "instance FromJSONPB %s where", qualifiedName)
 	for _, value := range enum.Value {
 		enum := strings.ToUpper(value.GetName())
 		v := strings.ToUpper(value.GetName())
-		print(b, "  parseJSONPB (JSONPB.String \"%s\") = pure %s'%s", enum, parentName, v)
+		if parent != nil {
+			v = fmt.Sprintf("%s'%s", parent.GetName(), v)
+		}
+		print(b, "  parseJSONPB (JSONPB.String \"%s\") = pure %s", enum, v)
 	}
 	print(b, "  parseJSONPB x = typeMismatch \"%s\" x", n)
 
 	// Generate a ToJSONPB Instance
 	print(b, "")
-	print(b, "instance ToJSONPB %s'%s where", parentName, n)
+	print(b, "instance ToJSONPB %s where", qualifiedName)
 	print(b, "  toJSONPB x _ = A.String . T.toUpper . T.pack $ show x")
 	print(b, "  toEncodingPB x _ = E.text . T.toUpper . T.pack  $ show x")
 
-	printToFromJSONInstances(b, fmt.Sprintf("%s'%s", parentName, n))
+	printToFromJSONInstances(b, qualifiedName)
 }
 
 type aField struct {

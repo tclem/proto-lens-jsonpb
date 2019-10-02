@@ -10,6 +10,7 @@ module Proto.Haberdasher
        (Haberdasher(..), Health(..), Bill(), Bill'Extra(..),
         _Bill'VatInfo, _Bill'ZipCode, Bill'BillingStatus(..),
         Bill'BillingStatus(), Bill'BillingStatus'UnrecognizedValue,
+        ChangeType(..), ChangeType(), ChangeType'UnrecognizedValue, Demo(),
         EmptyMessage(), FieldTestMessage(), Hat(), Ping(), Pong(),
         Pong'Extra(..), _Pong'T, _Pong'U, Price(), Size(), Test())
        where
@@ -420,6 +421,156 @@ instance Data.ProtoLens.FieldDefault Bill'BillingStatus where
         fieldDefault = Bill'UN_PAID
 instance Control.DeepSeq.NFData Bill'BillingStatus where
         rnf x__ = Prelude.seq x__ (())
+newtype ChangeType'UnrecognizedValue = ChangeType'UnrecognizedValue Data.Int.Int32
+                                         deriving (Prelude.Eq, Prelude.Ord, Prelude.Show)
+data ChangeType = ADDED
+                | REMOVED
+                | ChangeType'Unrecognized !ChangeType'UnrecognizedValue
+                    deriving (Prelude.Show, Prelude.Eq, Prelude.Ord)
+instance Data.ProtoLens.MessageEnum ChangeType where
+        maybeToEnum 0 = Prelude.Just ADDED
+        maybeToEnum 1 = Prelude.Just REMOVED
+        maybeToEnum k
+          = Prelude.Just
+              (ChangeType'Unrecognized
+                 (ChangeType'UnrecognizedValue (Prelude.fromIntegral k)))
+        showEnum ADDED = "ADDED"
+        showEnum REMOVED = "REMOVED"
+        showEnum (ChangeType'Unrecognized (ChangeType'UnrecognizedValue k))
+          = Prelude.show k
+        readEnum k
+          | (k) Prelude.== "ADDED" = Prelude.Just ADDED
+          | (k) Prelude.== "REMOVED" = Prelude.Just REMOVED
+        readEnum k
+          = (Text.Read.readMaybe k) Prelude.>>= Data.ProtoLens.maybeToEnum
+instance Prelude.Bounded ChangeType where
+        minBound = ADDED
+        maxBound = REMOVED
+instance Prelude.Enum ChangeType where
+        toEnum k__
+          = Prelude.maybe
+              (Prelude.error
+                 (("toEnum: unknown value for enum ChangeType: ") Prelude.++
+                    Prelude.show k__))
+              Prelude.id
+              (Data.ProtoLens.maybeToEnum k__)
+        fromEnum ADDED = 0
+        fromEnum REMOVED = 1
+        fromEnum (ChangeType'Unrecognized (ChangeType'UnrecognizedValue k))
+          = Prelude.fromIntegral k
+        succ REMOVED
+          = Prelude.error
+              "ChangeType.succ: bad argument REMOVED. This value would be out of bounds."
+        succ ADDED = REMOVED
+        succ (ChangeType'Unrecognized _)
+          = Prelude.error "ChangeType.succ: bad argument: unrecognized value"
+        pred ADDED
+          = Prelude.error
+              "ChangeType.pred: bad argument ADDED. This value would be out of bounds."
+        pred REMOVED = ADDED
+        pred (ChangeType'Unrecognized _)
+          = Prelude.error "ChangeType.pred: bad argument: unrecognized value"
+        enumFrom = Data.ProtoLens.Message.Enum.messageEnumFrom
+        enumFromTo = Data.ProtoLens.Message.Enum.messageEnumFromTo
+        enumFromThen = Data.ProtoLens.Message.Enum.messageEnumFromThen
+        enumFromThenTo = Data.ProtoLens.Message.Enum.messageEnumFromThenTo
+instance Data.ProtoLens.FieldDefault ChangeType where
+        fieldDefault = ADDED
+instance Control.DeepSeq.NFData ChangeType where
+        rnf x__ = Prelude.seq x__ (())
+{- | Fields :
+
+    * 'Proto.Haberdasher_Fields.changeType' @:: Lens' Demo ChangeType@
+ -}
+data Demo = Demo{_Demo'changeType :: !ChangeType,
+                 _Demo'_unknownFields :: !Data.ProtoLens.FieldSet}
+              deriving (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show Demo where
+        showsPrec _ __x __s
+          = Prelude.showChar '{'
+              (Prelude.showString (Data.ProtoLens.showMessageShort __x)
+                 (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField Demo "changeType"
+           (ChangeType)
+         where
+        fieldOf _
+          = (Lens.Family2.Unchecked.lens _Demo'changeType
+               (\ x__ y__ -> x__{_Demo'changeType = y__}))
+              Prelude.. Prelude.id
+instance Data.ProtoLens.Message Demo where
+        messageName _ = Data.Text.pack "example.haberdasher.Demo"
+        fieldsByTag
+          = let changeType__field_descriptor
+                  = Data.ProtoLens.FieldDescriptor "change_type"
+                      (Data.ProtoLens.ScalarField Data.ProtoLens.EnumField ::
+                         Data.ProtoLens.FieldTypeDescriptor ChangeType)
+                      (Data.ProtoLens.PlainField Data.ProtoLens.Optional
+                         (Data.ProtoLens.Field.field @"changeType"))
+                      :: Data.ProtoLens.FieldDescriptor Demo
+              in
+              Data.Map.fromList
+                [(Data.ProtoLens.Tag 1, changeType__field_descriptor)]
+        unknownFields
+          = Lens.Family2.Unchecked.lens _Demo'_unknownFields
+              (\ x__ y__ -> x__{_Demo'_unknownFields = y__})
+        defMessage
+          = Demo{_Demo'changeType = Data.ProtoLens.fieldDefault,
+                 _Demo'_unknownFields = ([])}
+        parseMessage
+          = let loop :: Demo -> Data.ProtoLens.Encoding.Bytes.Parser Demo
+                loop x
+                  = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+                       if end then
+                         do let missing = [] in
+                              if Prelude.null missing then Prelude.return () else
+                                Prelude.fail
+                                  (("Missing required fields: ") Prelude.++
+                                     Prelude.show (missing :: ([Prelude.String])))
+                            Prelude.return
+                              (Lens.Family2.over Data.ProtoLens.unknownFields
+                                 (\ !t -> Prelude.reverse t)
+                                 x)
+                         else
+                         do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                            case tag of
+                                8 -> do y <- (Prelude.fmap Prelude.toEnum
+                                                (Prelude.fmap Prelude.fromIntegral
+                                                   Data.ProtoLens.Encoding.Bytes.getVarInt))
+                                               Data.ProtoLens.Encoding.Bytes.<?> "change_type"
+                                        loop
+                                          (Lens.Family2.set
+                                             (Data.ProtoLens.Field.field @"changeType")
+                                             y
+                                             x)
+                                wire -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                                   wire
+                                           loop
+                                             (Lens.Family2.over Data.ProtoLens.unknownFields
+                                                (\ !t -> (:) y t)
+                                                x)
+              in
+              (do loop Data.ProtoLens.defMessage)
+                Data.ProtoLens.Encoding.Bytes.<?> "Demo"
+        buildMessage
+          = (\ _x ->
+               (let _v
+                      = Lens.Family2.view (Data.ProtoLens.Field.field @"changeType") _x
+                  in
+                  if (_v) Prelude.== Data.ProtoLens.fieldDefault then
+                    Data.Monoid.mempty else
+                    (Data.ProtoLens.Encoding.Bytes.putVarInt 8) Data.Monoid.<>
+                      (((Data.ProtoLens.Encoding.Bytes.putVarInt) Prelude..
+                          Prelude.fromIntegral)
+                         Prelude.. Prelude.fromEnum)
+                        _v)
+                 Data.Monoid.<>
+                 Data.ProtoLens.Encoding.Wire.buildFieldSet
+                   (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData Demo where
+        rnf
+          = (\ x__ ->
+               Control.DeepSeq.deepseq (_Demo'_unknownFields x__)
+                 (Control.DeepSeq.deepseq (_Demo'changeType x__) (())))
 {- | Fields :
 
  -}

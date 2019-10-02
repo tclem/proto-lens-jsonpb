@@ -62,6 +62,12 @@ cents ::
         (Prelude.Functor f, Data.ProtoLens.Field.HasField s "cents" a) =>
         Lens.Family2.LensLike' f s a
 cents = Data.ProtoLens.Field.field @"cents"
+changeType ::
+           forall f s a .
+             (Prelude.Functor f,
+              Data.ProtoLens.Field.HasField s "changeType" a) =>
+             Lens.Family2.LensLike' f s a
+changeType = Data.ProtoLens.Field.field @"changeType"
 color ::
       forall f s a .
         (Prelude.Functor f, Data.ProtoLens.Field.HasField s "color" a) =>

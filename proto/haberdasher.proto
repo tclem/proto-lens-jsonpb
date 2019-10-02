@@ -70,6 +70,15 @@ message Pong {
   string type = 6;
 }
 
+message Demo {
+  ChangeType change_type = 1;
+}
+
+enum ChangeType {
+  ADDED = 0;
+  REMOVED = 1;
+}
+
 message FieldTestMessage {
   bytes test_bytes = 3;
 }

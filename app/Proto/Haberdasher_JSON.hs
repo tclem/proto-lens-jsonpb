@@ -259,6 +259,27 @@ instance ToJSON Pong where
   toJSON = toAesonValue
   toEncoding = toAesonEncoding
 
+instance FromJSONPB Demo where
+  parseJSONPB = withObject "Demo" $ \obj -> do
+    changeType' <- obj .: "changeType"
+    pure $ defMessage
+      & P.changeType .~ changeType'
+
+instance ToJSONPB Demo where
+  toJSONPB x = object
+    [ "changeType" .= (x^.changeType)
+    ]
+  toEncodingPB x = pairs
+    [ "changeType" .= (x^.changeType)
+    ]
+
+instance FromJSON Demo where
+  parseJSON = parseJSONPB
+
+instance ToJSON Demo where
+  toJSON = toAesonValue
+  toEncoding = toAesonEncoding
+
 instance FromJSONPB FieldTestMessage where
   parseJSONPB = withObject "FieldTestMessage" $ \obj -> do
     testBytes' <- obj .: "testBytes"
@@ -291,5 +312,21 @@ instance FromJSON EmptyMessage where
   parseJSON = parseJSONPB
 
 instance ToJSON EmptyMessage where
+  toJSON = toAesonValue
+  toEncoding = toAesonEncoding
+
+instance FromJSONPB ChangeType where
+  parseJSONPB (JSONPB.String "ADDED") = pure ADDED
+  parseJSONPB (JSONPB.String "REMOVED") = pure REMOVED
+  parseJSONPB x = typeMismatch "ChangeType" x
+
+instance ToJSONPB ChangeType where
+  toJSONPB x _ = A.String . T.toUpper . T.pack $ show x
+  toEncodingPB x _ = E.text . T.toUpper . T.pack  $ show x
+
+instance FromJSON ChangeType where
+  parseJSON = parseJSONPB
+
+instance ToJSON ChangeType where
   toJSON = toAesonValue
   toEncoding = toAesonEncoding
