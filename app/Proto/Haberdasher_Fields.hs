@@ -73,6 +73,17 @@ color ::
         (Prelude.Functor f, Data.ProtoLens.Field.HasField s "color" a) =>
         Lens.Family2.LensLike' f s a
 color = Data.ProtoLens.Field.field @"color"
+deleted ::
+        forall f s a .
+          (Prelude.Functor f, Data.ProtoLens.Field.HasField s "deleted" a) =>
+          Lens.Family2.LensLike' f s a
+deleted = Data.ProtoLens.Field.field @"deleted"
+diffVertexId ::
+             forall f s a .
+               (Prelude.Functor f,
+                Data.ProtoLens.Field.HasField s "diffVertexId" a) =>
+               Lens.Family2.LensLike' f s a
+diffVertexId = Data.ProtoLens.Field.field @"diffVertexId"
 dollars ::
         forall f s a .
           (Prelude.Functor f, Data.ProtoLens.Field.HasField s "dollars" a) =>
@@ -88,17 +99,41 @@ inches ::
          (Prelude.Functor f, Data.ProtoLens.Field.HasField s "inches" a) =>
          Lens.Family2.LensLike' f s a
 inches = Data.ProtoLens.Field.field @"inches"
+inserted ::
+         forall f s a .
+           (Prelude.Functor f,
+            Data.ProtoLens.Field.HasField s "inserted" a) =>
+           Lens.Family2.LensLike' f s a
+inserted = Data.ProtoLens.Field.field @"inserted"
 items ::
       forall f s a .
         (Prelude.Functor f, Data.ProtoLens.Field.HasField s "items" a) =>
         Lens.Family2.LensLike' f s a
 items = Data.ProtoLens.Field.field @"items"
+maybe'deleted ::
+              forall f s a .
+                (Prelude.Functor f,
+                 Data.ProtoLens.Field.HasField s "maybe'deleted" a) =>
+                Lens.Family2.LensLike' f s a
+maybe'deleted = Data.ProtoLens.Field.field @"maybe'deleted"
+maybe'diffTerm ::
+               forall f s a .
+                 (Prelude.Functor f,
+                  Data.ProtoLens.Field.HasField s "maybe'diffTerm" a) =>
+                 Lens.Family2.LensLike' f s a
+maybe'diffTerm = Data.ProtoLens.Field.field @"maybe'diffTerm"
 maybe'extra ::
             forall f s a .
               (Prelude.Functor f,
                Data.ProtoLens.Field.HasField s "maybe'extra" a) =>
               Lens.Family2.LensLike' f s a
 maybe'extra = Data.ProtoLens.Field.field @"maybe'extra"
+maybe'inserted ::
+               forall f s a .
+                 (Prelude.Functor f,
+                  Data.ProtoLens.Field.HasField s "maybe'inserted" a) =>
+                 Lens.Family2.LensLike' f s a
+maybe'inserted = Data.ProtoLens.Field.field @"maybe'inserted"
 maybe'price ::
             forall f s a .
               (Prelude.Functor f,
@@ -157,6 +192,11 @@ t ::
     (Prelude.Functor f, Data.ProtoLens.Field.HasField s "t" a) =>
     Lens.Family2.LensLike' f s a
 t = Data.ProtoLens.Field.field @"t"
+term ::
+     forall f s a .
+       (Prelude.Functor f, Data.ProtoLens.Field.HasField s "term" a) =>
+       Lens.Family2.LensLike' f s a
+term = Data.ProtoLens.Field.field @"term"
 testBytes ::
           forall f s a .
             (Prelude.Functor f,

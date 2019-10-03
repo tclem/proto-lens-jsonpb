@@ -10,9 +10,12 @@ module Proto.Haberdasher
        (Haberdasher(..), Health(..), Bill(), Bill'Extra(..),
         _Bill'VatInfo, _Bill'ZipCode, Bill'BillingStatus(..),
         Bill'BillingStatus(), Bill'BillingStatus'UnrecognizedValue,
-        ChangeType(..), ChangeType(), ChangeType'UnrecognizedValue, Demo(),
-        EmptyMessage(), FieldTestMessage(), Hat(), Ping(), Pong(),
-        Pong'Extra(..), _Pong'T, _Pong'U, Price(), Size(), Test())
+        ChangeType(..), ChangeType(), ChangeType'UnrecognizedValue,
+        DeletedTerm(), Demo(), DiffTreeVertex(),
+        DiffTreeVertex'DiffTerm(..), _DiffTreeVertex'Deleted,
+        _DiffTreeVertex'Inserted, EmptyMessage(), FieldTestMessage(),
+        Hat(), InsertedTerm(), Ping(), Pong(), Pong'Extra(..), _Pong'T,
+        _Pong'U, Price(), Size(), Test())
        where
 import qualified Data.ProtoLens.Runtime.Control.DeepSeq
        as Control.DeepSeq
@@ -480,6 +483,104 @@ instance Control.DeepSeq.NFData ChangeType where
         rnf x__ = Prelude.seq x__ (())
 {- | Fields :
 
+    * 'Proto.Haberdasher_Fields.term' @:: Lens' DeletedTerm Data.Text.Text@
+ -}
+data DeletedTerm = DeletedTerm{_DeletedTerm'term ::
+                               !Data.Text.Text,
+                               _DeletedTerm'_unknownFields :: !Data.ProtoLens.FieldSet}
+                     deriving (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show DeletedTerm where
+        showsPrec _ __x __s
+          = Prelude.showChar '{'
+              (Prelude.showString (Data.ProtoLens.showMessageShort __x)
+                 (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField DeletedTerm "term"
+           (Data.Text.Text)
+         where
+        fieldOf _
+          = (Lens.Family2.Unchecked.lens _DeletedTerm'term
+               (\ x__ y__ -> x__{_DeletedTerm'term = y__}))
+              Prelude.. Prelude.id
+instance Data.ProtoLens.Message DeletedTerm where
+        messageName _ = Data.Text.pack "example.haberdasher.DeletedTerm"
+        fieldsByTag
+          = let term__field_descriptor
+                  = Data.ProtoLens.FieldDescriptor "term"
+                      (Data.ProtoLens.ScalarField Data.ProtoLens.StringField ::
+                         Data.ProtoLens.FieldTypeDescriptor Data.Text.Text)
+                      (Data.ProtoLens.PlainField Data.ProtoLens.Optional
+                         (Data.ProtoLens.Field.field @"term"))
+                      :: Data.ProtoLens.FieldDescriptor DeletedTerm
+              in
+              Data.Map.fromList [(Data.ProtoLens.Tag 1, term__field_descriptor)]
+        unknownFields
+          = Lens.Family2.Unchecked.lens _DeletedTerm'_unknownFields
+              (\ x__ y__ -> x__{_DeletedTerm'_unknownFields = y__})
+        defMessage
+          = DeletedTerm{_DeletedTerm'term = Data.ProtoLens.fieldDefault,
+                        _DeletedTerm'_unknownFields = ([])}
+        parseMessage
+          = let loop ::
+                     DeletedTerm -> Data.ProtoLens.Encoding.Bytes.Parser DeletedTerm
+                loop x
+                  = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+                       if end then
+                         do let missing = [] in
+                              if Prelude.null missing then Prelude.return () else
+                                Prelude.fail
+                                  (("Missing required fields: ") Prelude.++
+                                     Prelude.show (missing :: ([Prelude.String])))
+                            Prelude.return
+                              (Lens.Family2.over Data.ProtoLens.unknownFields
+                                 (\ !t -> Prelude.reverse t)
+                                 x)
+                         else
+                         do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                            case tag of
+                                10 -> do y <- (do value <- do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                                              Data.ProtoLens.Encoding.Bytes.getBytes
+                                                                (Prelude.fromIntegral len)
+                                                  Data.ProtoLens.Encoding.Bytes.runEither
+                                                    (case Data.Text.Encoding.decodeUtf8' value of
+                                                         Prelude.Left err -> Prelude.Left
+                                                                               (Prelude.show err)
+                                                         Prelude.Right r -> Prelude.Right r))
+                                                Data.ProtoLens.Encoding.Bytes.<?> "term"
+                                         loop
+                                           (Lens.Family2.set (Data.ProtoLens.Field.field @"term") y
+                                              x)
+                                wire -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                                   wire
+                                           loop
+                                             (Lens.Family2.over Data.ProtoLens.unknownFields
+                                                (\ !t -> (:) y t)
+                                                x)
+              in
+              (do loop Data.ProtoLens.defMessage)
+                Data.ProtoLens.Encoding.Bytes.<?> "DeletedTerm"
+        buildMessage
+          = (\ _x ->
+               (let _v = Lens.Family2.view (Data.ProtoLens.Field.field @"term") _x
+                  in
+                  if (_v) Prelude.== Data.ProtoLens.fieldDefault then
+                    Data.Monoid.mempty else
+                    (Data.ProtoLens.Encoding.Bytes.putVarInt 10) Data.Monoid.<>
+                      (((\ bs ->
+                           (Data.ProtoLens.Encoding.Bytes.putVarInt
+                              (Prelude.fromIntegral (Data.ByteString.length bs)))
+                             Data.Monoid.<> Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                         Prelude.. Data.Text.Encoding.encodeUtf8)
+                        _v)
+                 Data.Monoid.<>
+                 Data.ProtoLens.Encoding.Wire.buildFieldSet
+                   (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData DeletedTerm where
+        rnf
+          = (\ x__ ->
+               Control.DeepSeq.deepseq (_DeletedTerm'_unknownFields x__)
+                 (Control.DeepSeq.deepseq (_DeletedTerm'term x__) (())))
+{- | Fields :
+
     * 'Proto.Haberdasher_Fields.changeType' @:: Lens' Demo ChangeType@
  -}
 data Demo = Demo{_Demo'changeType :: !ChangeType,
@@ -571,6 +672,257 @@ instance Control.DeepSeq.NFData Demo where
           = (\ x__ ->
                Control.DeepSeq.deepseq (_Demo'_unknownFields x__)
                  (Control.DeepSeq.deepseq (_Demo'changeType x__) (())))
+{- | Fields :
+
+    * 'Proto.Haberdasher_Fields.diffVertexId' @:: Lens' DiffTreeVertex Data.Int.Int32@
+    * 'Proto.Haberdasher_Fields.maybe'diffTerm' @:: Lens' DiffTreeVertex (Prelude.Maybe DiffTreeVertex'DiffTerm)@
+    * 'Proto.Haberdasher_Fields.maybe'deleted' @:: Lens' DiffTreeVertex (Prelude.Maybe DeletedTerm)@
+    * 'Proto.Haberdasher_Fields.deleted' @:: Lens' DiffTreeVertex DeletedTerm@
+    * 'Proto.Haberdasher_Fields.maybe'inserted' @:: Lens' DiffTreeVertex (Prelude.Maybe InsertedTerm)@
+    * 'Proto.Haberdasher_Fields.inserted' @:: Lens' DiffTreeVertex InsertedTerm@
+ -}
+data DiffTreeVertex = DiffTreeVertex{_DiffTreeVertex'diffVertexId
+                                     :: !Data.Int.Int32,
+                                     _DiffTreeVertex'diffTerm ::
+                                     !(Prelude.Maybe DiffTreeVertex'DiffTerm),
+                                     _DiffTreeVertex'_unknownFields :: !Data.ProtoLens.FieldSet}
+                        deriving (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show DiffTreeVertex where
+        showsPrec _ __x __s
+          = Prelude.showChar '{'
+              (Prelude.showString (Data.ProtoLens.showMessageShort __x)
+                 (Prelude.showChar '}' __s))
+data DiffTreeVertex'DiffTerm = DiffTreeVertex'Deleted !DeletedTerm
+                             | DiffTreeVertex'Inserted !InsertedTerm
+                                 deriving (Prelude.Show, Prelude.Eq, Prelude.Ord)
+instance Data.ProtoLens.Field.HasField DiffTreeVertex
+           "diffVertexId"
+           (Data.Int.Int32)
+         where
+        fieldOf _
+          = (Lens.Family2.Unchecked.lens _DiffTreeVertex'diffVertexId
+               (\ x__ y__ -> x__{_DiffTreeVertex'diffVertexId = y__}))
+              Prelude.. Prelude.id
+instance Data.ProtoLens.Field.HasField DiffTreeVertex
+           "maybe'diffTerm"
+           (Prelude.Maybe DiffTreeVertex'DiffTerm)
+         where
+        fieldOf _
+          = (Lens.Family2.Unchecked.lens _DiffTreeVertex'diffTerm
+               (\ x__ y__ -> x__{_DiffTreeVertex'diffTerm = y__}))
+              Prelude.. Prelude.id
+instance Data.ProtoLens.Field.HasField DiffTreeVertex
+           "maybe'deleted"
+           (Prelude.Maybe DeletedTerm)
+         where
+        fieldOf _
+          = (Lens.Family2.Unchecked.lens _DiffTreeVertex'diffTerm
+               (\ x__ y__ -> x__{_DiffTreeVertex'diffTerm = y__}))
+              Prelude..
+              Lens.Family2.Unchecked.lens
+                (\ x__ ->
+                   case x__ of
+                       Prelude.Just (DiffTreeVertex'Deleted x__val) -> Prelude.Just x__val
+                       _otherwise -> Prelude.Nothing)
+                (\ _ y__ -> Prelude.fmap DiffTreeVertex'Deleted y__)
+instance Data.ProtoLens.Field.HasField DiffTreeVertex "deleted"
+           (DeletedTerm)
+         where
+        fieldOf _
+          = (Lens.Family2.Unchecked.lens _DiffTreeVertex'diffTerm
+               (\ x__ y__ -> x__{_DiffTreeVertex'diffTerm = y__}))
+              Prelude..
+              (Lens.Family2.Unchecked.lens
+                 (\ x__ ->
+                    case x__ of
+                        Prelude.Just (DiffTreeVertex'Deleted x__val) -> Prelude.Just x__val
+                        _otherwise -> Prelude.Nothing)
+                 (\ _ y__ -> Prelude.fmap DiffTreeVertex'Deleted y__))
+                Prelude.. Data.ProtoLens.maybeLens Data.ProtoLens.defMessage
+instance Data.ProtoLens.Field.HasField DiffTreeVertex
+           "maybe'inserted"
+           (Prelude.Maybe InsertedTerm)
+         where
+        fieldOf _
+          = (Lens.Family2.Unchecked.lens _DiffTreeVertex'diffTerm
+               (\ x__ y__ -> x__{_DiffTreeVertex'diffTerm = y__}))
+              Prelude..
+              Lens.Family2.Unchecked.lens
+                (\ x__ ->
+                   case x__ of
+                       Prelude.Just (DiffTreeVertex'Inserted x__val) -> Prelude.Just
+                                                                          x__val
+                       _otherwise -> Prelude.Nothing)
+                (\ _ y__ -> Prelude.fmap DiffTreeVertex'Inserted y__)
+instance Data.ProtoLens.Field.HasField DiffTreeVertex "inserted"
+           (InsertedTerm)
+         where
+        fieldOf _
+          = (Lens.Family2.Unchecked.lens _DiffTreeVertex'diffTerm
+               (\ x__ y__ -> x__{_DiffTreeVertex'diffTerm = y__}))
+              Prelude..
+              (Lens.Family2.Unchecked.lens
+                 (\ x__ ->
+                    case x__ of
+                        Prelude.Just (DiffTreeVertex'Inserted x__val) -> Prelude.Just
+                                                                           x__val
+                        _otherwise -> Prelude.Nothing)
+                 (\ _ y__ -> Prelude.fmap DiffTreeVertex'Inserted y__))
+                Prelude.. Data.ProtoLens.maybeLens Data.ProtoLens.defMessage
+instance Data.ProtoLens.Message DiffTreeVertex where
+        messageName _ = Data.Text.pack "example.haberdasher.DiffTreeVertex"
+        fieldsByTag
+          = let diffVertexId__field_descriptor
+                  = Data.ProtoLens.FieldDescriptor "diff_vertex_id"
+                      (Data.ProtoLens.ScalarField Data.ProtoLens.Int32Field ::
+                         Data.ProtoLens.FieldTypeDescriptor Data.Int.Int32)
+                      (Data.ProtoLens.PlainField Data.ProtoLens.Optional
+                         (Data.ProtoLens.Field.field @"diffVertexId"))
+                      :: Data.ProtoLens.FieldDescriptor DiffTreeVertex
+                deleted__field_descriptor
+                  = Data.ProtoLens.FieldDescriptor "deleted"
+                      (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                         Data.ProtoLens.FieldTypeDescriptor DeletedTerm)
+                      (Data.ProtoLens.OptionalField
+                         (Data.ProtoLens.Field.field @"maybe'deleted"))
+                      :: Data.ProtoLens.FieldDescriptor DiffTreeVertex
+                inserted__field_descriptor
+                  = Data.ProtoLens.FieldDescriptor "inserted"
+                      (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                         Data.ProtoLens.FieldTypeDescriptor InsertedTerm)
+                      (Data.ProtoLens.OptionalField
+                         (Data.ProtoLens.Field.field @"maybe'inserted"))
+                      :: Data.ProtoLens.FieldDescriptor DiffTreeVertex
+              in
+              Data.Map.fromList
+                [(Data.ProtoLens.Tag 1, diffVertexId__field_descriptor),
+                 (Data.ProtoLens.Tag 2, deleted__field_descriptor),
+                 (Data.ProtoLens.Tag 3, inserted__field_descriptor)]
+        unknownFields
+          = Lens.Family2.Unchecked.lens _DiffTreeVertex'_unknownFields
+              (\ x__ y__ -> x__{_DiffTreeVertex'_unknownFields = y__})
+        defMessage
+          = DiffTreeVertex{_DiffTreeVertex'diffVertexId =
+                             Data.ProtoLens.fieldDefault,
+                           _DiffTreeVertex'diffTerm = Prelude.Nothing,
+                           _DiffTreeVertex'_unknownFields = ([])}
+        parseMessage
+          = let loop ::
+                     DiffTreeVertex ->
+                       Data.ProtoLens.Encoding.Bytes.Parser DiffTreeVertex
+                loop x
+                  = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+                       if end then
+                         do let missing = [] in
+                              if Prelude.null missing then Prelude.return () else
+                                Prelude.fail
+                                  (("Missing required fields: ") Prelude.++
+                                     Prelude.show (missing :: ([Prelude.String])))
+                            Prelude.return
+                              (Lens.Family2.over Data.ProtoLens.unknownFields
+                                 (\ !t -> Prelude.reverse t)
+                                 x)
+                         else
+                         do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                            case tag of
+                                8 -> do y <- (Prelude.fmap Prelude.fromIntegral
+                                                Data.ProtoLens.Encoding.Bytes.getVarInt)
+                                               Data.ProtoLens.Encoding.Bytes.<?> "diff_vertex_id"
+                                        loop
+                                          (Lens.Family2.set
+                                             (Data.ProtoLens.Field.field @"diffVertexId")
+                                             y
+                                             x)
+                                18 -> do y <- (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                                  Data.ProtoLens.Encoding.Bytes.isolate
+                                                    (Prelude.fromIntegral len)
+                                                    Data.ProtoLens.parseMessage)
+                                                Data.ProtoLens.Encoding.Bytes.<?> "deleted"
+                                         loop
+                                           (Lens.Family2.set (Data.ProtoLens.Field.field @"deleted")
+                                              y
+                                              x)
+                                26 -> do y <- (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                                  Data.ProtoLens.Encoding.Bytes.isolate
+                                                    (Prelude.fromIntegral len)
+                                                    Data.ProtoLens.parseMessage)
+                                                Data.ProtoLens.Encoding.Bytes.<?> "inserted"
+                                         loop
+                                           (Lens.Family2.set
+                                              (Data.ProtoLens.Field.field @"inserted")
+                                              y
+                                              x)
+                                wire -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                                   wire
+                                           loop
+                                             (Lens.Family2.over Data.ProtoLens.unknownFields
+                                                (\ !t -> (:) y t)
+                                                x)
+              in
+              (do loop Data.ProtoLens.defMessage)
+                Data.ProtoLens.Encoding.Bytes.<?> "DiffTreeVertex"
+        buildMessage
+          = (\ _x ->
+               (let _v
+                      = Lens.Family2.view (Data.ProtoLens.Field.field @"diffVertexId") _x
+                  in
+                  if (_v) Prelude.== Data.ProtoLens.fieldDefault then
+                    Data.Monoid.mempty else
+                    (Data.ProtoLens.Encoding.Bytes.putVarInt 8) Data.Monoid.<>
+                      ((Data.ProtoLens.Encoding.Bytes.putVarInt) Prelude..
+                         Prelude.fromIntegral)
+                        _v)
+                 Data.Monoid.<>
+                 (case
+                    Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'diffTerm") _x
+                    of
+                      (Prelude.Nothing) -> Data.Monoid.mempty
+                      Prelude.Just
+                        (DiffTreeVertex'Deleted
+                           v) -> (Data.ProtoLens.Encoding.Bytes.putVarInt 18) Data.Monoid.<>
+                                   (((\ bs ->
+                                        (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                           (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                          Data.Monoid.<> Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                                      Prelude.. Data.ProtoLens.encodeMessage)
+                                     v
+                      Prelude.Just
+                        (DiffTreeVertex'Inserted
+                           v) -> (Data.ProtoLens.Encoding.Bytes.putVarInt 26) Data.Monoid.<>
+                                   (((\ bs ->
+                                        (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                           (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                          Data.Monoid.<> Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                                      Prelude.. Data.ProtoLens.encodeMessage)
+                                     v)
+                   Data.Monoid.<>
+                   Data.ProtoLens.Encoding.Wire.buildFieldSet
+                     (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData DiffTreeVertex where
+        rnf
+          = (\ x__ ->
+               Control.DeepSeq.deepseq (_DiffTreeVertex'_unknownFields x__)
+                 (Control.DeepSeq.deepseq (_DiffTreeVertex'diffVertexId x__)
+                    (Control.DeepSeq.deepseq (_DiffTreeVertex'diffTerm x__) (()))))
+instance Control.DeepSeq.NFData DiffTreeVertex'DiffTerm where
+        rnf (DiffTreeVertex'Deleted x__) = Control.DeepSeq.rnf x__
+        rnf (DiffTreeVertex'Inserted x__) = Control.DeepSeq.rnf x__
+_DiffTreeVertex'Deleted ::
+                        Data.ProtoLens.Prism.Prism' DiffTreeVertex'DiffTerm DeletedTerm
+_DiffTreeVertex'Deleted
+  = Data.ProtoLens.Prism.prism' DiffTreeVertex'Deleted
+      (\ p__ ->
+         case p__ of
+             DiffTreeVertex'Deleted p__val -> Prelude.Just p__val
+             _otherwise -> Prelude.Nothing)
+_DiffTreeVertex'Inserted ::
+                         Data.ProtoLens.Prism.Prism' DiffTreeVertex'DiffTerm InsertedTerm
+_DiffTreeVertex'Inserted
+  = Data.ProtoLens.Prism.prism' DiffTreeVertex'Inserted
+      (\ p__ ->
+         case p__ of
+             DiffTreeVertex'Inserted p__val -> Prelude.Just p__val
+             _otherwise -> Prelude.Nothing)
 {- | Fields :
 
  -}
@@ -897,6 +1249,104 @@ instance Control.DeepSeq.NFData Hat where
                  (Control.DeepSeq.deepseq (_Hat'inches x__)
                     (Control.DeepSeq.deepseq (_Hat'color x__)
                        (Control.DeepSeq.deepseq (_Hat'name x__) (())))))
+{- | Fields :
+
+    * 'Proto.Haberdasher_Fields.term' @:: Lens' InsertedTerm Data.Text.Text@
+ -}
+data InsertedTerm = InsertedTerm{_InsertedTerm'term ::
+                                 !Data.Text.Text,
+                                 _InsertedTerm'_unknownFields :: !Data.ProtoLens.FieldSet}
+                      deriving (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show InsertedTerm where
+        showsPrec _ __x __s
+          = Prelude.showChar '{'
+              (Prelude.showString (Data.ProtoLens.showMessageShort __x)
+                 (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField InsertedTerm "term"
+           (Data.Text.Text)
+         where
+        fieldOf _
+          = (Lens.Family2.Unchecked.lens _InsertedTerm'term
+               (\ x__ y__ -> x__{_InsertedTerm'term = y__}))
+              Prelude.. Prelude.id
+instance Data.ProtoLens.Message InsertedTerm where
+        messageName _ = Data.Text.pack "example.haberdasher.InsertedTerm"
+        fieldsByTag
+          = let term__field_descriptor
+                  = Data.ProtoLens.FieldDescriptor "term"
+                      (Data.ProtoLens.ScalarField Data.ProtoLens.StringField ::
+                         Data.ProtoLens.FieldTypeDescriptor Data.Text.Text)
+                      (Data.ProtoLens.PlainField Data.ProtoLens.Optional
+                         (Data.ProtoLens.Field.field @"term"))
+                      :: Data.ProtoLens.FieldDescriptor InsertedTerm
+              in
+              Data.Map.fromList [(Data.ProtoLens.Tag 1, term__field_descriptor)]
+        unknownFields
+          = Lens.Family2.Unchecked.lens _InsertedTerm'_unknownFields
+              (\ x__ y__ -> x__{_InsertedTerm'_unknownFields = y__})
+        defMessage
+          = InsertedTerm{_InsertedTerm'term = Data.ProtoLens.fieldDefault,
+                         _InsertedTerm'_unknownFields = ([])}
+        parseMessage
+          = let loop ::
+                     InsertedTerm -> Data.ProtoLens.Encoding.Bytes.Parser InsertedTerm
+                loop x
+                  = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+                       if end then
+                         do let missing = [] in
+                              if Prelude.null missing then Prelude.return () else
+                                Prelude.fail
+                                  (("Missing required fields: ") Prelude.++
+                                     Prelude.show (missing :: ([Prelude.String])))
+                            Prelude.return
+                              (Lens.Family2.over Data.ProtoLens.unknownFields
+                                 (\ !t -> Prelude.reverse t)
+                                 x)
+                         else
+                         do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                            case tag of
+                                10 -> do y <- (do value <- do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                                              Data.ProtoLens.Encoding.Bytes.getBytes
+                                                                (Prelude.fromIntegral len)
+                                                  Data.ProtoLens.Encoding.Bytes.runEither
+                                                    (case Data.Text.Encoding.decodeUtf8' value of
+                                                         Prelude.Left err -> Prelude.Left
+                                                                               (Prelude.show err)
+                                                         Prelude.Right r -> Prelude.Right r))
+                                                Data.ProtoLens.Encoding.Bytes.<?> "term"
+                                         loop
+                                           (Lens.Family2.set (Data.ProtoLens.Field.field @"term") y
+                                              x)
+                                wire -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                                   wire
+                                           loop
+                                             (Lens.Family2.over Data.ProtoLens.unknownFields
+                                                (\ !t -> (:) y t)
+                                                x)
+              in
+              (do loop Data.ProtoLens.defMessage)
+                Data.ProtoLens.Encoding.Bytes.<?> "InsertedTerm"
+        buildMessage
+          = (\ _x ->
+               (let _v = Lens.Family2.view (Data.ProtoLens.Field.field @"term") _x
+                  in
+                  if (_v) Prelude.== Data.ProtoLens.fieldDefault then
+                    Data.Monoid.mempty else
+                    (Data.ProtoLens.Encoding.Bytes.putVarInt 10) Data.Monoid.<>
+                      (((\ bs ->
+                           (Data.ProtoLens.Encoding.Bytes.putVarInt
+                              (Prelude.fromIntegral (Data.ByteString.length bs)))
+                             Data.Monoid.<> Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                         Prelude.. Data.Text.Encoding.encodeUtf8)
+                        _v)
+                 Data.Monoid.<>
+                 Data.ProtoLens.Encoding.Wire.buildFieldSet
+                   (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData InsertedTerm where
+        rnf
+          = (\ x__ ->
+               Control.DeepSeq.deepseq (_InsertedTerm'_unknownFields x__)
+                 (Control.DeepSeq.deepseq (_InsertedTerm'term x__) (())))
 {- | Fields :
 
     * 'Proto.Haberdasher_Fields.service' @:: Lens' Ping Data.Text.Text@

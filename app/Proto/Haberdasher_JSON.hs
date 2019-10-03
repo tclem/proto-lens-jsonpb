@@ -2,7 +2,7 @@
 {-# OPTIONS_GHC -Wno-orphans -Wno-unused-imports -Wno-missing-export-lists #-}
 module Proto.Haberdasher_JSON where
 
-import           Prelude(($), (.), (<$>), pure, show)
+import           Prelude(($), (.), (<$>), pure, show, Maybe(..))
 
 import           Data.ProtoLens.Runtime.Lens.Family2 ((^.), (.~), (&))
 import           Data.Monoid (mconcat)
@@ -312,6 +312,93 @@ instance FromJSON EmptyMessage where
   parseJSON = parseJSONPB
 
 instance ToJSON EmptyMessage where
+  toJSON = toAesonValue
+  toEncoding = toAesonEncoding
+
+instance FromJSONPB DiffTreeVertex'DiffTerm where
+  parseJSONPB = A.withObject "DiffTreeVertex'DiffTerm" $ \obj -> mconcat
+    [
+      DiffTreeVertex'Deleted <$> parseField obj "deleted"
+    , DiffTreeVertex'Inserted <$> parseField obj "inserted"
+    ]
+
+instance ToJSONPB DiffTreeVertex'DiffTerm where
+  toJSONPB (DiffTreeVertex'Deleted x) = object [ "deleted" .= Just x ]
+  toJSONPB (DiffTreeVertex'Inserted x) = object [ "inserted" .= Just x ]
+  toEncodingPB (DiffTreeVertex'Deleted x) = pairs [ "deleted" .= Just x ]
+  toEncodingPB (DiffTreeVertex'Inserted x) = pairs [ "inserted" .= Just x ]
+
+instance FromJSON DiffTreeVertex'DiffTerm where
+  parseJSON = parseJSONPB
+
+instance ToJSON DiffTreeVertex'DiffTerm where
+  toJSON = toAesonValue
+  toEncoding = toAesonEncoding
+
+instance FromJSONPB DiffTreeVertex where
+  parseJSONPB = withObject "DiffTreeVertex" $ \obj -> do
+    diffVertexId' <- obj .: "diffVertexId"
+    diffTerm' <- obj A..:? "diffTerm"
+    pure $ defMessage
+      & P.diffVertexId .~ diffVertexId'
+      & P.maybe'diffTerm .~ diffTerm'
+
+instance ToJSONPB DiffTreeVertex where
+  toJSONPB x = object
+    [ "diffVertexId" .= (x^.diffVertexId)
+    , "diffTerm" .= (x^.maybe'diffTerm)
+    ]
+  toEncodingPB x = pairs
+    [ "diffVertexId" .= (x^.diffVertexId)
+    , "diffTerm" .= (x^.maybe'diffTerm)
+    ]
+
+instance FromJSON DiffTreeVertex where
+  parseJSON = parseJSONPB
+
+instance ToJSON DiffTreeVertex where
+  toJSON = toAesonValue
+  toEncoding = toAesonEncoding
+
+instance FromJSONPB DeletedTerm where
+  parseJSONPB = withObject "DeletedTerm" $ \obj -> do
+    term' <- obj .: "term"
+    pure $ defMessage
+      & P.term .~ term'
+
+instance ToJSONPB DeletedTerm where
+  toJSONPB x = object
+    [ "term" .= (x^.term)
+    ]
+  toEncodingPB x = pairs
+    [ "term" .= (x^.term)
+    ]
+
+instance FromJSON DeletedTerm where
+  parseJSON = parseJSONPB
+
+instance ToJSON DeletedTerm where
+  toJSON = toAesonValue
+  toEncoding = toAesonEncoding
+
+instance FromJSONPB InsertedTerm where
+  parseJSONPB = withObject "InsertedTerm" $ \obj -> do
+    term' <- obj .: "term"
+    pure $ defMessage
+      & P.term .~ term'
+
+instance ToJSONPB InsertedTerm where
+  toJSONPB x = object
+    [ "term" .= (x^.term)
+    ]
+  toEncodingPB x = pairs
+    [ "term" .= (x^.term)
+    ]
+
+instance FromJSON InsertedTerm where
+  parseJSON = parseJSONPB
+
+instance ToJSON InsertedTerm where
   toJSON = toAesonValue
   toEncoding = toAesonEncoding
 

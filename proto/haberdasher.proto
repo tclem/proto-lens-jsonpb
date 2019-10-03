@@ -84,3 +84,19 @@ message FieldTestMessage {
 }
 
 message EmptyMessage {}
+
+message DiffTreeVertex {
+  int32 diff_vertex_id = 1;
+  oneof diff_term {
+    DeletedTerm deleted = 2;
+    InsertedTerm inserted = 3;
+  }
+}
+
+message DeletedTerm {
+  string term = 1;
+}
+
+message InsertedTerm {
+  string term = 1;
+}

@@ -60,7 +60,7 @@ func (g *generator) generateHaskellCode(file *descriptor.FileDescriptorProto) st
 	print(b, "module Proto.%s_JSON where", moduleName)
 	print(b, "")
 
-	print(b, "import           Prelude(($), (.), (<$>), pure, show)")
+	print(b, "import           Prelude(($), (.), (<$>), pure, show, Maybe(..))")
 	print(b, "")
 
 	print(b, "import           Data.ProtoLens.Runtime.Lens.Family2 ((^.), (.~), (&))")
@@ -183,11 +183,19 @@ func generateOneof(b *bytes.Buffer, message *descriptor.DescriptorProto, oneof *
 	print(b, "")
 	print(b, "instance ToJSONPB %s where", n)
 	for _, f := range fieldsForOneOfInstance(message, " ", ",") {
-		print(b, "  toJSONPB (%s'%s x) = object [ \"%s\" .= x ]", outerName, f.fieldName, f.rawFieldName)
+		x := "x"
+		if f.isMaybeField {
+			x = "Just x"
+		}
+		print(b, "  toJSONPB (%s'%s x) = object [ \"%s\" .= %s ]", outerName, f.fieldName, f.rawFieldName, x)
 	}
 
 	for _, f := range fieldsForOneOfInstance(message, " ", ",") {
-		print(b, "  toEncodingPB (%s'%s x) = pairs [ \"%s\" .= x ]", outerName, f.fieldName, f.rawFieldName)
+		x := "x"
+		if f.isMaybeField {
+			x = "Just x"
+		}
+		print(b, "  toEncodingPB (%s'%s x) = pairs [ \"%s\" .= %s ]", outerName, f.fieldName, f.rawFieldName, x)
 	}
 
 	printToFromJSONInstances(b, n)
@@ -240,7 +248,14 @@ func fieldsForOneOfInstance(message *descriptor.DescriptorProto, firstSep string
 			if first {
 				sep = firstSep
 			}
-			fields = append(fields, aField{sep: sep, fieldName: fieldName, rawFieldName: field.GetName()})
+			isMaybeField := false
+			switch *field.Type {
+			case descriptor.FieldDescriptorProto_TYPE_MESSAGE:
+				if field.GetLabel() != descriptor.FieldDescriptorProto_LABEL_REPEATED {
+					isMaybeField = true
+				}
+			}
+			fields = append(fields, aField{sep: sep, fieldName: fieldName, isMaybeField: isMaybeField, rawFieldName: field.GetName()})
 			first = false
 		}
 	}
