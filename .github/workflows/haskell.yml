@@ -31,5 +31,3 @@ jobs:
       run: |
         cabal v2-build
         cabal v2-haddock
-        cabal v2-sdist
-        cabal check
