@@ -88,10 +88,10 @@ import           GHC.Word (Word32, Word64)
 
 
 -- * Typeclass definitions
+
 -- | 'A.ToJSON' variant for JSONPB direct encoding via 'A.Encoding'
-class ToJSONPB a
+class ToJSONPB a where
   -- | 'A.toJSON' variant for JSONPB encoders.
-  where
   toJSONPB :: a -> Options -> A.Value
   -- | 'A.toEncoding' variant for JSONPB encoders. If an implementation is not
   -- provided, uses 'toJSONPB' (which is less efficient since it indirects
@@ -100,12 +100,12 @@ class ToJSONPB a
   toEncodingPB x = A.toEncoding . toJSONPB x
 
 -- | 'A.FromJSON' variant for JSONPB decoding from the 'A.Value' IR
-class FromJSONPB a
+class FromJSONPB a where
   -- | 'A.parseJSON' variant for JSONPB decoders.
-  where
   parseJSONPB :: A.Value -> A.Parser a
 
 -- * JSONPB codec entry points
+
 -- | 'Data.Aeson.encode' variant for serializing a JSONPB value as a lazy
 -- 'LBS.ByteString'.
 encode :: ToJSONPB a => Options -> a -> LBS.ByteString
