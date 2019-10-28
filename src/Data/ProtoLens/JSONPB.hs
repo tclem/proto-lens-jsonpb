@@ -1,6 +1,6 @@
 module Data.ProtoLens.JSONPB
-    -- * Typeclasses
-  ( FromJSONPB(..)
+  ( -- * Typeclasses
+    FromJSONPB(..)
   , ToJSONPB(..)
     -- * Operators
   , (.:)
