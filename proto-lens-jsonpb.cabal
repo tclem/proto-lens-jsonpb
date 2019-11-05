@@ -11,6 +11,7 @@ license-file:   LICENSE
 author:         Timothy Clem
 maintainer:     timothy.clem@gmail.com
 copyright:      2019 Timothy Clem
+category:       Web
 build-type:     Simple
 extra-source-files: README.md
 
@@ -51,8 +52,6 @@ library
   exposed-modules:
       Data.ProtoLens.JSONPB
       Data.ProtoLens.JSONPB.Class
-  other-modules:
-      Paths_proto_lens_jsonpb
   hs-source-dirs:
       src
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
