@@ -1,7 +1,7 @@
 cabal-version:  2.4
 
 name:           proto-lens-jsonpb
-version:        0.1.0.0
+version:        0.2.0.0
 synopsis:       JSON protobuf encoding for proto-lens
 description:    Please see the README on GitHub at <https://github.com/tclem/proto-lens-jsonpb#readme>
 homepage:       https://github.com/tclem/proto-lens-jsonpb#readme
