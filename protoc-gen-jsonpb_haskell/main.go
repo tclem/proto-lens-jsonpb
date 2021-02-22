@@ -73,6 +73,10 @@ func (g *generator) generateHaskellCode(file *descriptor.FileDescriptorProto) st
 	print(b, "import qualified Data.Text as T")
 	print(b, "")
 
+  for _, dep := range file.Dependency {
+      print(b, "import           Proto.%s_JSON ()", packageType(dep))
+  }
+
 	print(b, "import           Proto.%s as P", moduleName)
 	print(b, "import           Proto.%s_Fields as P", moduleName)
 
