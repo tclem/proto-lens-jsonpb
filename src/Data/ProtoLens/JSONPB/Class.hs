@@ -1,4 +1,8 @@
-{-# LANGUAGE FlexibleInstances, OverloadedLists, RecordWildCards, ScopedTypeVariables, ViewPatterns #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE OverloadedLists #-}
+{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE ViewPatterns #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
 -- Ported from https://github.com/awakesecurity/proto3-suite (Apache v2 License)
@@ -54,30 +58,20 @@
 -- @
 module Data.ProtoLens.JSONPB.Class where
 
-import qualified Data.Aeson as A
-    ( Encoding
-    , FromJSON (..)
-    , FromJSONKey (..)
-    , FromJSONKeyFunction (..)
-    , ToJSON (..)
-    , Value (..)
-    , eitherDecode
-    , json
-    , (.!=)
-    )
+import qualified Data.Aeson as A (Encoding, FromJSON(..), FromJSONKey(..), FromJSONKeyFunction(..), ToJSON(..), Value(..), eitherDecode, json, (.!=))
 
 import qualified Data.Aeson.Encoding as E
 import qualified Data.Aeson.Internal as A (formatError, iparse)
 import qualified Data.Aeson.Parser as A (eitherDecodeWith)
-import qualified Data.Aeson.Types as A
-    (Object, Pair, Parser, Series, explicitParseField, explicitParseFieldMaybe, object, typeMismatch)
+import qualified Data.Aeson.Types as A (Object, Pair, Parser, Series, explicitParseField, explicitParseFieldMaybe, object, typeMismatch)
 import qualified Data.Attoparsec.ByteString as Atto (skipWhile)
 import qualified Data.Attoparsec.ByteString.Char8 as Atto (Parser, endOfInput)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Base64 as B64
 import qualified Data.ByteString.Lazy as LBS
-import           Data.ProtoLens.Runtime.Data.ProtoLens (FieldDefault (..))
-import           Data.Text (Text)
+import           Data.ProtoLens.Runtime.Data.ProtoLens (FieldDefault(..))
+import           Data.String (fromString)
+import           Data.Text (Text, unpack)
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import qualified Data.Text.Lazy as TL
@@ -141,10 +135,10 @@ class Monoid m =>
   pair :: ToJSONPB v => Text -> v -> Options -> m
 
 instance KeyValuePB A.Series where
-  pair k v opts = E.pair k (toEncodingPB v opts)
+  pair k v opts = E.pair (fromString (unpack k)) (toEncodingPB v opts)
 
 instance KeyValuePB [A.Pair] where
-  pair k v opts = pure (k, toJSONPB v opts)
+  pair k v opts = pure (fromString (unpack k), toJSONPB v opts)
 
 -- | Construct a monoidal key-value pair, using 'mempty' to represent omission
 -- of default values (unless the given 'Options' force their emission).
@@ -160,12 +154,12 @@ k .= v = mk
 -- object, or if it is present but its value is null, we produce the default
 -- protobuf value for the field type
 (.:) :: (FromJSONPB a, FieldDefault a) => A.Object -> Text -> A.Parser a
-obj .: key = obj .:? key A..!= fieldDefault
+obj .: key = obj .:? fromString (unpack key) A..!= fieldDefault
   where
     (.:?) = A.explicitParseFieldMaybe parseJSONPB
 
 parseField :: FromJSONPB a => A.Object -> Text -> A.Parser a
-parseField = A.explicitParseField parseJSONPB
+parseField o = A.explicitParseField parseJSONPB o . fromString . unpack
 
 -- * JSONPB rendering and parsing options
 data Options =

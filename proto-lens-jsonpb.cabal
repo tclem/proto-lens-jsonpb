@@ -1,7 +1,7 @@
 cabal-version:  2.4
 
 name:           proto-lens-jsonpb
-version:        0.2.0.2
+version:        0.2.1
 synopsis:       JSON protobuf encoding for proto-lens
 description:    Please see the README on GitHub at <https://github.com/tclem/proto-lens-jsonpb#readme>
 homepage:       https://github.com/tclem/proto-lens-jsonpb#readme
@@ -15,9 +15,9 @@ category:       Web
 build-type:     Simple
 extra-source-files: README.md
 
-tested-with:    GHC == 8.6.5
-              , GHC == 8.8.1
-              , GHC == 8.10.1
+tested-with:    GHC == 8.10.1
+              , GHC == 9.0.1
+              , GHC == 9.2.1
 
 -- GHC extensions shared between targets
 common haskell
@@ -40,8 +40,8 @@ common haskell
 common dependencies
   build-depends:
       base >=4.7 && <5
-    , aeson >=1.4 && <1.6
-    , bytestring >= 0.10.8
+    , aeson >= 1.4.2.0 && < 3
+    , bytestring >= 0.10.8.2 && < 0.13
     , proto-lens-runtime >= 0.5 && <0.8
     , text ^>= 1.2.3.2
     , vector >= 0.12.0.3
