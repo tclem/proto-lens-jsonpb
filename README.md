@@ -9,7 +9,7 @@ This requires the use of [proto-lens](https://github.com/google/proto-lens) to g
 1. Install `protoc` (e.g., `brew install protoc`)
 2. Install the required protoc plugins:
    - `cabal install proto-lens-protoc`
-   - `go get github.com/tclem/proto-lens-jsonpb/protoc-gen-jsonpb_haskell`
+   - `go install github.com/tclem/proto-lens-jsonpb/protoc-gen-jsonpb_haskell`
 
 ## Usage
 
