@@ -56,7 +56,7 @@ func (g *generator) generateHaskellCode(file *descriptor.FileDescriptorProto) st
 	print(b, "{-# LANGUAGE OverloadedStrings #-}")
 	print(b, "{-# OPTIONS_GHC -Wno-orphans -Wno-unused-imports -Wno-missing-export-lists #-}")
 
-	moduleName := packageFileName(filePath(file))
+	moduleName := toModuleName(file)
 	print(b, "module Proto.%s_JSON where", moduleName)
 	print(b, "")
 
