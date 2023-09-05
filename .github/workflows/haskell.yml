@@ -51,3 +51,7 @@ jobs:
       run: |
         cabal v2-build all
         cabal v2-haddock all
+
+    - name: Build example app
+      run: |
+        cd ./example && cabal v2-build all

@@ -7,6 +7,6 @@ set -e
 cd "$(dirname "$0")/.."
 
 protoc -I=. --proto_path=./proto \
-  --plugin=protoc-gen-haskell=`which proto-lens-protoc` --haskell_out=./app \
-  --plugin=protoc-gen-jsonpb_haskell=./script/run-jsonpb_haskell --jsonpb_haskell_out=./app \
+  --plugin=protoc-gen-haskell=`which proto-lens-protoc` --haskell_out=./example/app \
+  --plugin=protoc-gen-jsonpb_haskell=./script/run-jsonpb_haskell --jsonpb_haskell_out=./example/app \
   haberdasher.proto
